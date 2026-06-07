@@ -27,6 +27,9 @@
     --shadow:      rgba(0,0,0,0.08);
     --nav-bg:      #FFFFFF;
     --nav-txt:     #1A1A1A;
+    --bg-nav:      #FFFFFF;
+    --txt-nav:     #1A1A1A;
+    --bg-hover:    #e0dcdc;
     --thead-bg:    #F4F4F4;
     --row-hover:   #F9F9F9;
     --input-bg:    #F4F4F4;
