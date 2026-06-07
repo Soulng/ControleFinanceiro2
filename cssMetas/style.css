@@ -280,67 +280,21 @@ body {
 
 /* configs da barra lateral */
 
+/* ── Navbar lateral ───────────────────────────────────── */
 nav.menu-lateral {
-  width: 70px;
-  height: 100vh;
-  background-color: white;
-  padding: 40px 1% 40px 1%;
-  border-radius: 0px 18px 18px 0px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  transition: .2s;
+  width: 70px; height: 100vh;
+  background-color: var(--bg-nav);
+  padding: 40px 1%; border-radius: 0 18px 18px 0;
+  position: fixed; top: 0; left: 0;
+  overflow: hidden; transition: .3s; z-index: 100;
+  box-shadow: 2px 0 8px var(--shadow);
 }
-
-nav.menu-lateral.expandir {
-  width: 200px;
-}
-
-.btn-expandir.expandir {
-  padding-left: 50px;
-}
-
-.btn-expandir {
-  width: 100%;
-  padding-left: 5px;
-}
-
-.btn-expandir i {
-  color: #2A9D8F;
-  cursor: pointer;
-  font-size: 24px;
-  margin-bottom: 45px;
-}
-
-ul li.item-menu a {
-  font-family: "Montserrat", sans-serif;
-  color: black;
-  text-decoration: none;
-  font-size: 18px;
-  padding: 20px 4%;
-  display: flex;
-  align-items: center;
-  justify-items: center;
-}
-
-ul li.ativo {
-  background-color: #2A9D8F;
-  border-radius: 15px;
-  transition: .2;
-}
-
-ul li.item-menu:hover:not(.ativo) {
-  background-color: rgb(209, 202, 202);
-  border-radius: 15px;
-  transition: .2;
-}
-
-ul li.item-menu a .txt-link-menu-lat {
-  margin-left: 50px;
-  transition: .2s;
-}
-
-nav.menu-lateral.expandir .txt-link-menu-lat {
-  margin-left: 20px;
-}
+nav.menu-lateral.expandir { width: 200px; }
+.btn-expandir { width: 100%; padding-left: 5px; }
+.btn-expandir i { color: var(--verde); cursor: pointer; font-size: 24px; margin-bottom: 45px; display: block; }
+ul li.item-menu a { color: var(--txt-nav); text-decoration: none; font-size: 18px; padding: 14px 6%; display: flex; align-items: center; }
+.txt-link-menu-lat { margin-left: 50px; white-space: nowrap; transition: .2s; }
+nav.menu-lateral.expandir .txt-link-menu-lat { margin-left: 20px; }
+ul li.ativo { background-color: var(--verde); border-radius: 15px; }
+ul li.ativo a { color: #fff; }
+ul li.item-menu:hover:not(.ativo) { background-color: var(--bg-hover); border-radius: 15px; }
