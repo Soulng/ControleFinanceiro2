@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-tema="claro">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance Easy — Investimentos</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --verde:       #2A9D8F;
+      --verde-claro: #4cdbab;
+      --laranja:     #E76F51;
+      --azul-escuro: #264653;
+      --amarelo:     #E9C46A;
+
+      --bg-page:    #F9E8C6;
+      --bg-card:    #ffffff;
+      --bg-nav:     #ffffff;
+      --bg-thead:   #f0faf8;
+      --bg-hover:   #e0dcdc;
+      --bg-input:   #f5f5f5;
+
+      --txt-primary: #264653;
+      --txt-second:  #444444;
+      --txt-muted:   #999999;
+      --txt-nav:     #000000;
+
+      --border: #f0f0f0;
+      --shadow: rgba(0,0,0,0.08);
+    }
+
+    [data-tema="escuro"] {
+      --bg-page:    #0f1923;
+      --bg-card:    #1a2635;
+      --bg-nav:     #141e2b;
+      --bg-thead:   #1f2f40;
+      --bg-hover:   #1f2f40;
+      --bg-input:   #1f2f40;
+
+      --txt-primary: #e8f4f2;
+      --txt-second:  #c8d8e4;
+      --txt-muted:   #7a9ab0;
+      --txt-nav:     #e8f4f2;
+
+      --border: #243447;
+      --shadow: rgba(0,0,0,0.35);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; list-style:none; font-family:"Montserrat",sans-serif; }
+
+    body { background-color:var(--bg-page); min-height:100vh; transition:background-color .3s; }
+
+    /* MENU LATERAL */
+    nav.menu-lateral {
+      width:70px; height:100vh;
+      background-color:var(--bg-nav);
+      padding:40px 1%; border-radius:0 18px 18px 0;
+      position:fixed; top:0; left:0;
+      overflow:hidden; transition:.3s; z-index:100;
+      box-shadow:2px 0 8px var(--shadow);
+    }
+    nav.menu-lateral.expandir { width:200px; }
+    .btn-expandir { width:100%; padding-left:5px; }
+    .btn-expandir i { color:var(--verde); cursor:pointer; font-size:24px; margin-bottom:45px; display:block; }
+    ul li.item-menu a { color:var(--txt-nav); text-decoration:none; font-size:18px; padding:14px 6%; display:flex; align-items:center; }
+    .txt-link-menu-lat { margin-left:50px; white-space:nowrap; transition:.2s; }
+    nav.menu-lateral.expandir .txt-link-menu-lat { margin-left:16px; }
+    ul li.ativo { background-color:var(--verde); border-radius:15px; }
+    ul li.ativo a { color:#fff; }
+    ul li.item-menu:hover:not(.ativo) { background-color:var(--bg-hover); border-radius:15px; }
+
+    /* CONTEÚDO */
+    .main-content { margin-left:85px; padding:30px 30px 60px; transition:margin .2s; }
+    .main-content.expandir { margin-left:215px; }
+
+    /* CABEÇALHO */
+    .page-header {
+      display:flex; align-items:center; justify-content:space-between;
+      background:var(--bg-card); border-radius:12px; padding:18px 24px;
+      margin-bottom:28px; box-shadow:0 2px 6px var(--shadow); transition:background .3s;
+    }
+    .page-header h1 { font-size:22px; color:var(--txt-primary); }
+    .page-header-direita { display:flex; align-items:center; gap:14px; }
+    .page-header-direita span { font-size:14px; color:var(--txt-muted); }
+
+    .btn-tema {
+      display:flex; align-items:center; gap:7px;
+      background:var(--bg-input); border:1.5px solid var(--border);
+      color:var(--txt-primary); border-radius:30px;
+      padding:7px 14px; font-size:13px; font-weight:600;
+      cursor:pointer; transition:.3s; white-space:nowrap;
+    }
+    .btn-tema:hover { border-color:var(--verde); color:var(--verde); }
+    .btn-tema i { font-size:14px; }
+
+    /* SEÇÕES */
+    .section { margin-bottom:28px; }
+    .section-title {
+      font-size:18px; color:var(--txt-primary); font-weight:700;
+      margin-bottom:16px; display:flex; align-items:center; gap:8px;
+    }
+    .section-title i { color:var(--verde); }
+
+    /* CARDS DE FII */
+    .fiis-grid {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+      gap:20px; margin-bottom:28px;
+    }
+    .fii-card {
+      background:var(--bg-card); border-radius:12px; padding:20px;
+      box-shadow:0 2px 8px var(--shadow);
+      border-left:4px solid var(--verde);
+      transition:transform .2s, box-shadow .2s;
+    }
+    .fii-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 6px 16px var(--shadow);
+    }
+    .fii-header {
+      display:flex; justify-content:space-between; align-items:flex-start;
+      margin-bottom:12px;
+    }
+    .fii-codigo {
+      font-size:18px; font-weight:700; color:var(--verde);
+    }
+    .fii-tipo {
+      display:inline-block; background:var(--bg-input); color:var(--txt-muted);
+      padding:4px 10px; border-radius:6px; font-size:11px; font-weight:600;
+      text-transform:uppercase;
+    }
+    .fii-nome {
+      font-size:14px; color:var(--txt-second); margin-bottom:12px; font-weight:600;
+    }
+    .fii-descricao {
+      font-size:13px; color:var(--txt-muted); line-height:1.5; margin-bottom:14px;
+    }
+    .fii-info {
+      background:var(--bg-input); padding:12px; border-radius:8px;
+      margin-bottom:14px; font-size:12px;
+    }
+    .fii-info-row {
+      display:flex; justify-content:space-between; margin-bottom:6px;
+    }
+    .fii-info-row:last-child { margin-bottom:0; }
+    .fii-info-label { color:var(--txt-muted); }
+    .fii-info-valor { color:var(--txt-primary); font-weight:600; }
+    .fii-info-valor.positivo { color:#2A9D8F; }
+    .fii-info-valor.negativo { color:#E76F51; }
+    .fii-highlights {
+      display:flex; flex-wrap:wrap; gap:6px;
+    }
+    .highlight-badge {
+      background:rgba(42, 157, 143, 0.1); color:var(--verde);
+      padding:4px 8px; border-radius:4px; font-size:11px; font-weight:600;
+    }
+
+    /* BARRA DE CONTROLES DOS FIIs */
+    .fiis-controles {
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:12px; margin-bottom:16px;
+    }
+    .fiis-filtros {
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .btn-filtro {
+      background:var(--bg-input); border:1.5px solid var(--border);
+      color:var(--txt-second); border-radius:20px;
+      padding:6px 14px; font-size:12px; font-weight:600;
+      cursor:pointer; transition:.2s;
+    }
+    .btn-filtro:hover, .btn-filtro.ativo {
+      background:var(--verde); border-color:var(--verde); color:#fff;
+    }
+    .btn-atualizar {
+      display:flex; align-items:center; gap:8px;
+      background:var(--verde); color:#fff; border:none;
+      border-radius:10px; padding:10px 20px;
+      font-size:13px; font-weight:700; cursor:pointer;
+      transition:.2s; white-space:nowrap;
+    }
+    .btn-atualizar:hover { background:#1a7e72; transform:translateY(-1px); }
+    .btn-atualizar:disabled { background:var(--txt-muted); cursor:not-allowed; transform:none; }
+    .btn-atualizar i { font-size:14px; }
+    .btn-atualizar.girando i { animation: girar 1s linear infinite; }
+    @keyframes girar { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+
+    /* STATUS DA ATUALIZAÇÃO */
+    .status-atualizacao {
+      display:flex; align-items:center; gap:8px;
+      font-size:12px; color:var(--txt-muted);
+    }
+    .status-dot {
+      width:8px; height:8px; border-radius:50%;
+      background:var(--txt-muted);
+    }
+    .status-dot.ok { background:#2A9D8F; }
+    .status-dot.erro { background:#E76F51; }
+    .status-dot.carregando { background:#E9C46A; animation: piscar 1s ease-in-out infinite; }
+    @keyframes piscar { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* SKELETON LOADING */
+    .fii-card-skeleton {
+      background:var(--bg-card); border-radius:12px; padding:20px;
+      box-shadow:0 2px 8px var(--shadow); border-left:4px solid var(--border);
+    }
+    .skeleton-line {
+      background: linear-gradient(90deg, var(--bg-input) 25%, var(--bg-hover) 50%, var(--bg-input) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius:4px; margin-bottom:10px;
+    }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+    /* MENSAGEM DE ERRO */
+    .erro-box {
+      background:var(--bg-card); border-radius:12px; padding:24px;
+      box-shadow:0 2px 8px var(--shadow); border-left:4px solid var(--laranja);
+      text-align:center;
+    }
+    .erro-box i { font-size:32px; color:var(--laranja); margin-bottom:12px; display:block; }
+    .erro-box p { color:var(--txt-second); font-size:14px; }
+
+    /* CARDS DE DICAS */
+    .tips-grid {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+      gap:16px;
+    }
+    .tip-card {
+      background:var(--bg-card); border-radius:12px; padding:18px;
+      box-shadow:0 2px 8px var(--shadow);
+      position:relative; overflow:hidden;
+    }
+    .tip-card::before {
+      content:''; position:absolute; top:0; left:0; width:4px; height:100%;
+      background:var(--laranja);
+    }
+    .tip-number {
+      display:inline-flex; background:var(--laranja); color:white;
+      width:32px; height:32px; border-radius:50%;
+      align-items:center; justify-content:center;
+      font-weight:700; font-size:14px; margin-bottom:10px;
+    }
+    .tip-card h3 {
+      font-size:14px; color:var(--txt-primary); font-weight:700;
+      margin-bottom:8px;
+    }
+    .tip-card p {
+      font-size:12px; color:var(--txt-muted); line-height:1.5;
+    }
+
+    /* CARDS DE EDUCAÇÃO */
+    .education-grid {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+      gap:16px;
+    }
+    .edu-card {
+      background:var(--bg-card); border-radius:12px; padding:18px;
+      box-shadow:0 2px 8px var(--shadow);
+      text-align:center;
+    }
+    .edu-icon {
+      font-size:32px; margin-bottom:10px; color:var(--verde);
+    }
+    .edu-card h3 {
+      font-size:14px; color:var(--txt-primary); font-weight:700;
+      margin-bottom:8px;
+    }
+    .edu-card p {
+      font-size:12px; color:var(--txt-muted); line-height:1.5;
+    }
+
+    /* CAIXA DE INFORMAÇÃO */
+    .info-box {
+      background:var(--bg-card); border-radius:12px; padding:20px;
+      box-shadow:0 2px 8px var(--shadow);
+      border-left:4px solid var(--amarelo);
+      margin-bottom:28px;
+    }
+    .info-box h3 {
+      font-size:16px; color:var(--txt-primary); font-weight:700;
+      margin-bottom:10px;
+    }
+    .info-box p {
+      font-size:13px; color:var(--txt-second); line-height:1.6;
+    }
+
+    /* AVISO DE DADOS AO VIVO */
+    .aviso-live {
+      display:flex; align-items:center; gap:8px;
+      background:rgba(42,157,143,0.08); border:1px solid rgba(42,157,143,0.2);
+      border-radius:8px; padding:10px 14px;
+      font-size:12px; color:var(--txt-second); margin-bottom:16px;
+    }
+    .aviso-live i { color:var(--verde); }
+
+    /* RESPONSIVO */
+    @media(max-width:768px) {
+      .fiis-grid { grid-template-columns:1fr; }
+      .tips-grid { grid-template-columns:1fr; }
+      .education-grid { grid-template-columns:1fr; }
+      .page-header { flex-direction:column; align-items:flex-start; gap:12px; }
+      .page-header-direita { width:100%; }
+      .fiis-controles { flex-direction:column; align-items:flex-start; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- MENU LATERAL -->
+  <nav class="menu-lateral" id="menuLat">
+    <div class="btn-expandir" id="bt-exp">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+    <ul>
+      <li class="item-menu"><a href="home.html">
+        <span class="icone-menu-lat"><i class="fa-solid fa-house"></i></span>
+        <span class="txt-link-menu-lat">Início</span>
+      </a></li>
+      <li class="item-menu"><a href="dashboard.html">
+        <span class="icone-menu-lat"><i class="fa-solid fa-chart-simple"></i></span>
+        <span class="txt-link-menu-lat">Gráficos</span>
+      </a></li>
+      <li class="item-menu"><a href="metas.html">
+        <span class="icone-menu-lat"><i class="fa-solid fa-list-check"></i></span>
+        <span class="txt-link-menu-lat">Metas</span>
+      </a></li>
+      <li class="item-menu ativo"><a href="#">
+        <span class="icone-menu-lat"><i class="fa-solid fa-building"></i></span>
+        <span class="txt-link-menu-lat">Investimentos</span>
+      </a></li>
+      <li class="item-menu"><a href="usuario.html">
+        <span class="icone-menu-lat"><i class="fa-solid fa-user"></i></span>
+        <span class="txt-link-menu-lat">Perfil</span>
+      </a></li>
+      <li class="item-menu" id="btn-logout">
+        <a href="#">
+            <span class="icone-menu-lat"><i class="fa-solid fa-right-from-bracket"></i></span>
+            <span class="txt-link-menu-lat">Sair</span>
+        </a>
+    </li>
+    </ul>
+  </nav>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="main-content" id="mainContent">
+
+    <!-- Cabeçalho -->
+    <div class="page-header">
+      <h1><i class="fa-solid fa-building" style="color:var(--verde);margin-right:10px;"></i>Dicas de Investimentos</h1>
+      <div class="page-header-direita">
+        <span id="dataAtual"></span>
+        <button class="btn-tema" id="btnTema" onclick="alternarTema()">
+          <i class="fa-solid fa-moon" id="iconeTema"></i>
+          <span id="textoTema">Modo Escuro</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Seção de Educação -->
+    <div class="section">
+      <h2 class="section-title">
+        <i class="fa-solid fa-lightbulb"></i>
+        O que são Fundos Imobiliários?
+      </h2>
+      <div class="info-box">
+        <p>
+          Fundos Imobiliários (FIIs) são investimentos que permitem que você participe do mercado imobiliário sem precisar comprar um imóvel inteiro. 
+          Você compra cotas do fundo, que investe em imóveis ou em créditos imobiliários, e recebe dividendos mensais ou periódicos. 
+          É uma forma acessível de começar a investir em imóveis com pouco capital!
+        </p>
+      </div>
+    </div>
+
+    <!-- Benefícios dos FIIs -->
+    <div class="section">
+      <h2 class="section-title">
+        <i class="fa-solid fa-star"></i>
+        Benefícios dos Fundos Imobiliários
+      </h2>
+      <div class="education-grid">
+        <div class="edu-card">
+          <div class="edu-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+          <h3>Dividendos Mensais</h3>
+          <p>Receba renda passiva todo mês através dos dividendos dos fundos.</p>
+        </div>
+        <div class="edu-card">
+          <div class="edu-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+          <h3>Baixo Capital</h3>
+          <p>Comece a investir com cotas a partir de R$ 5, acessível para todos.</p>
+        </div>
+        <div class="edu-card">
+          <div class="edu-icon"><i class="fa-solid fa-chart-pie"></i></div>
+          <h3>Diversificação</h3>
+          <p>Invista em múltiplos imóveis através de um único fundo.</p>
+        </div>
+        <div class="edu-card">
+          <div class="edu-icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
+          <h3>Liquidez</h3>
+          <p>Compre e venda suas cotas facilmente na bolsa de valores.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIIs em Tempo Real -->
+    <div class="section">
+      <h2 class="section-title">
+        <i class="fa-solid fa-chart-line"></i>
+        Fundos Imobiliários — Cotações em Tempo Real
+      </h2>
+
+      <div class="aviso-live">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>Dados obtidos diretamente da B3 via Yahoo Finance. Clique em <strong>Atualizar Fundos</strong> para buscar as cotações mais recentes do mercado.</span>
+      </div>
+
+      <!-- Controles -->
+      <div class="fiis-controles">
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+          <div class="fiis-filtros">
+            <button class="btn-filtro ativo" onclick="filtrar('todos', this)">Todos</button>
+            <button class="btn-filtro" onclick="filtrar('baratos', this)">Abaixo de R$50</button>
+            <button class="btn-filtro" onclick="filtrar('papel', this)">Papel (CRI)</button>
+            <button class="btn-filtro" onclick="filtrar('tijolo', this)">Tijolo</button>
+            <button class="btn-filtro" onclick="filtrar('fof', this)">Fundo de Fundos</button>
+          </div>
+          <div class="status-atualizacao">
+            <div class="status-dot" id="statusDot"></div>
+            <span id="statusTexto">Aguardando atualização</span>
+          </div>
+        </div>
+        <button class="btn-atualizar" id="btnAtualizar" onclick="buscarFIIs()">
+          <i class="fa-solid fa-rotate" id="iconeAtualizar"></i>
+          Atualizar Fundos
+        </button>
+      </div>
+
+      <!-- Grid de FIIs (preenchida dinamicamente) -->
+      <div class="fiis-grid" id="fiisGrid">
+        <!-- Skeletons iniciais -->
+        <div class="fii-card-skeleton">
+          <div class="skeleton-line" style="height:20px; width:40%;"></div>
+          <div class="skeleton-line" style="height:14px; width:70%;"></div>
+          <div class="skeleton-line" style="height:60px;"></div>
+          <div class="skeleton-line" style="height:80px;"></div>
+        </div>
+        <div class="fii-card-skeleton">
+          <div class="skeleton-line" style="height:20px; width:40%;"></div>
+          <div class="skeleton-line" style="height:14px; width:70%;"></div>
+          <div class="skeleton-line" style="height:60px;"></div>
+          <div class="skeleton-line" style="height:80px;"></div>
+        </div>
+        <div class="fii-card-skeleton">
+          <div class="skeleton-line" style="height:20px; width:40%;"></div>
+          <div class="skeleton-line" style="height:14px; width:70%;"></div>
+          <div class="skeleton-line" style="height:60px;"></div>
+          <div class="skeleton-line" style="height:80px;"></div>
+        </div>
+      </div>
+
+      <!-- Última atualização -->
+      <p id="ultimaAtualizacao" style="font-size:11px; color:var(--txt-muted); text-align:right; margin-top:-10px;"></p>
+    </div>
+
+    <!-- Dicas Práticas -->
+    <div class="section">
+      <h2 class="section-title">
+        <i class="fa-solid fa-lightbulb"></i>
+        Dicas para Investir em FIIs
+      </h2>
+      <div class="tips-grid">
+        <div class="tip-card">
+          <div class="tip-number">1</div>
+          <h3>Diversifique</h3>
+          <p>Não coloque todo seu dinheiro em um único FII. Distribua entre 3 a 10 fundos diferentes para reduzir riscos.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-number">2</div>
+          <h3>Estude o Portfólio</h3>
+          <p>Conheça os imóveis e operações que compõem o fundo. Verifique a qualidade dos inquilinos e contratos.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-number">3</div>
+          <h3>Acompanhe Indicadores</h3>
+          <p>Fique atento ao Dividend Yield, P/VP (preço sobre valor patrimonial) e histórico de dividendos.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-number">4</div>
+          <h3>Tenha Paciência</h3>
+          <p>FIIs são investimentos de longo prazo. Mantenha sua carteira e aproveite os dividendos acumulados.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-number">5</div>
+          <h3>Reinvista Dividendos</h3>
+          <p>Considere reinvestir os dividendos recebidos para aproveitar o efeito dos juros compostos.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-number">6</div>
+          <h3>Acompanhe o Mercado</h3>
+          <p>Leia relatórios, acompanhe análises de especialistas e fique atualizado sobre o mercado imobiliário.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main-content -->
+
+  <script>
+    /* ============================================================
+       CONFIGURAÇÃO DA API
+    ============================================================ */
+    // URL do backend Flask — detecta automaticamente o ambiente
+    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:5050'
+      : 'https://5050-ia2ghc0zbhe3dqibygclx-0b6a326b.us2.manus.computer';
+
+    /* ============================================================
+       ESTADO GLOBAL
+    ============================================================ */
+    let todosFIIs = [];
+    let filtroAtivo = 'todos';
+
+    /* ============================================================
+       DARK MODE
+    ============================================================ */
+    function aplicarTema(tema) {
+      document.documentElement.setAttribute('data-tema', tema);
+      const escuro = tema === 'escuro';
+      document.getElementById('iconeTema').className = escuro ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      document.getElementById('textoTema').textContent = escuro ? 'Modo Claro' : 'Modo Escuro';
+      localStorage.setItem('financeTema', tema);
+    }
+    function alternarTema() {
+      const atual = document.documentElement.getAttribute('data-tema');
+      aplicarTema(atual === 'escuro' ? 'claro' : 'escuro');
+    }
+    aplicarTema(localStorage.getItem('financeTema') || 'claro');
+
+    /* ============================================================
+       MENU LATERAL
+    ============================================================ */
+    document.querySelector('#bt-exp').addEventListener('click', () => {
+      document.querySelector('.menu-lateral').classList.toggle('expandir');
+      document.querySelector('.main-content').classList.toggle('expandir');
+    });
+
+    document.getElementById('dataAtual').textContent =
+      new Date().toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+    const btnLogout = document.getElementById('btn-logout');
+    btnLogout.addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.removeItem('currentUserId');
+      alert('Saindo do sistema...');
+      window.location.href = 'index.html';
+    });
+
+    /* ============================================================
+       BUSCA DE FIIs EM TEMPO REAL
+    ============================================================ */
+    function setStatus(estado, texto) {
+      const dot = document.getElementById('statusDot');
+      const txt = document.getElementById('statusTexto');
+      dot.className = 'status-dot ' + estado;
+      txt.textContent = texto;
+    }
+
+    function setBotaoCarregando(carregando) {
+      const btn = document.getElementById('btnAtualizar');
+      const icone = document.getElementById('iconeAtualizar');
+      btn.disabled = carregando;
+      btn.classList.toggle('girando', carregando);
+      btn.querySelector('span') && (btn.querySelector('span').textContent = carregando ? 'Buscando...' : 'Atualizar Fundos');
+      // Atualiza o texto do botão
+      const textos = btn.querySelectorAll(':not(i)');
+      btn.childNodes.forEach(n => {
+        if (n.nodeType === 3) n.textContent = carregando ? ' Buscando...' : ' Atualizar Fundos';
+      });
+    }
+
+    async function buscarFIIs() {
+      const btn = document.getElementById('btnAtualizar');
+      const icone = document.getElementById('iconeAtualizar');
+
+      // Estado de carregamento
+      btn.disabled = true;
+      btn.classList.add('girando');
+      btn.innerHTML = '<i class="fa-solid fa-rotate" id="iconeAtualizar"></i> Buscando...';
+      setStatus('carregando', 'Buscando cotações na B3...');
+
+      // Mostrar skeletons
+      mostrarSkeletons();
+
+      try {
+        const resp = await fetch(`${API_BASE}/api/fiis`, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+        const dados = await resp.json();
+
+        if (dados.success && dados.dados) {
+          todosFIIs = dados.dados;
+          renderizarFIIs(todosFIIs);
+          setStatus('ok', `${dados.total} fundos carregados`);
+
+          const agora = new Date();
+          document.getElementById('ultimaAtualizacao').textContent =
+            `Última atualização: ${agora.toLocaleTimeString('pt-BR')} — Dados da B3 via Yahoo Finance`;
+        } else {
+          throw new Error('Resposta inválida da API');
+        }
+      } catch (err) {
+        console.error('Erro ao buscar FIIs:', err);
+        setStatus('erro', 'Erro ao buscar dados');
+        mostrarErro();
+      } finally {
+        btn.disabled = false;
+        btn.classList.remove('girando');
+        btn.innerHTML = '<i class="fa-solid fa-rotate" id="iconeAtualizar"></i> Atualizar Fundos';
+      }
+    }
+
+    /* ============================================================
+       FILTROS
+    ============================================================ */
+    function filtrar(tipo, btnEl) {
+      // Atualiza botão ativo
+      document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('ativo'));
+      btnEl.classList.add('ativo');
+      filtroAtivo = tipo;
+
+      if (todosFIIs.length === 0) return;
+
+      let lista = [...todosFIIs];
+
+      if (tipo === 'baratos') {
+        lista = lista.filter(f => f.preco && f.preco <= 50);
+      } else if (tipo === 'papel') {
+        lista = lista.filter(f => f.tipo && f.tipo.toLowerCase().includes('papel'));
+      } else if (tipo === 'tijolo') {
+        lista = lista.filter(f => f.tipo && f.tipo.toLowerCase().includes('tijolo'));
+      } else if (tipo === 'fof') {
+        lista = lista.filter(f => f.tipo && f.tipo.toLowerCase().includes('fundo'));
+      }
+
+      renderizarFIIs(lista);
+    }
+
+    /* ============================================================
+       RENDERIZAÇÃO DOS CARDS
+    ============================================================ */
+    function getLiquidez(volume) {
+      if (!volume) return 'N/D';
+      if (volume > 1000000) return 'Excelente';
+      if (volume > 200000) return 'Boa';
+      if (volume > 50000) return 'Moderada';
+      return 'Baixa';
+    }
+
+    function getHighlights(fii) {
+      const badges = [];
+      if (fii.preco && fii.preco <= 15) badges.push('✓ Super acessível');
+      else if (fii.preco && fii.preco <= 50) badges.push('✓ Preço acessível');
+      if (fii.dividendYield && fii.dividendYield > 14) badges.push('✓ Alto rendimento');
+      else if (fii.dividendYield && fii.dividendYield > 10) badges.push('✓ Bom rendimento');
+      if (fii.volume && fii.volume > 500000) badges.push('✓ Alta liquidez');
+      if (fii.pvp && fii.pvp < 1) badges.push('✓ Abaixo do VP');
+      if (fii.tipo === 'Papel') badges.push('✓ Renda de CRIs');
+      if (fii.tipo === 'Fundo de Fundos') badges.push('✓ Diversificação automática');
+      return badges.slice(0, 3);
+    }
+
+    function formatarPreco(preco) {
+      if (!preco) return 'N/D';
+      return preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function formatarDY(dy) {
+      if (!dy) return 'N/D';
+      return dy.toFixed(2) + '% a.a.';
+    }
+
+    function formatarVariacao(v) {
+      if (v === null || v === undefined) return { texto: 'N/D', classe: '' };
+      const sinal = v >= 0 ? '+' : '';
+      return {
+        texto: sinal + v.toFixed(2) + '%',
+        classe: v >= 0 ? 'positivo' : 'negativo'
+      };
+    }
+
+    function criarCardFII(fii) {
+      const variacao = formatarVariacao(fii.variacao);
+      const highlights = getHighlights(fii);
+      const liquidez = getLiquidez(fii.volume);
+
+      return `
+        <div class="fii-card">
+          <div class="fii-header">
+            <div class="fii-codigo">${fii.ticker}</div>
+            <span class="fii-tipo">${fii.tipo || 'FII'}</span>
+          </div>
+          <div class="fii-nome">${fii.nome || fii.ticker}</div>
+          <div class="fii-descricao">${fii.descricao || ''}</div>
+          <div class="fii-info">
+            <div class="fii-info-row">
+              <span class="fii-info-label">Cotação:</span>
+              <span class="fii-info-valor">${formatarPreco(fii.preco)}</span>
+            </div>
+            <div class="fii-info-row">
+              <span class="fii-info-label">Variação hoje:</span>
+              <span class="fii-info-valor ${variacao.classe}">${variacao.texto}</span>
+            </div>
+            <div class="fii-info-row">
+              <span class="fii-info-label">Dividend Yield:</span>
+              <span class="fii-info-valor">${formatarDY(fii.dividendYield)}</span>
+            </div>
+            <div class="fii-info-row">
+              <span class="fii-info-label">P/VP:</span>
+              <span class="fii-info-valor">${fii.pvp ? fii.pvp.toFixed(2) : 'N/D'}</span>
+            </div>
+            <div class="fii-info-row">
+              <span class="fii-info-label">Liquidez:</span>
+              <span class="fii-info-valor">${liquidez}</span>
+            </div>
+          </div>
+          <div class="fii-highlights">
+            ${highlights.map(h => `<span class="highlight-badge">${h}</span>`).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderizarFIIs(lista) {
+      const grid = document.getElementById('fiisGrid');
+
+      if (lista.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--txt-muted);">
+            <i class="fa-solid fa-filter" style="font-size:32px; margin-bottom:12px; display:block;"></i>
+            <p>Nenhum fundo encontrado com este filtro.</p>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = lista.map(criarCardFII).join('');
+    }
+
+    function mostrarSkeletons() {
+      const grid = document.getElementById('fiisGrid');
+      const skeleton = `
+        <div class="fii-card-skeleton">
+          <div class="skeleton-line" style="height:20px; width:40%;"></div>
+          <div class="skeleton-line" style="height:14px; width:70%;"></div>
+          <div class="skeleton-line" style="height:60px;"></div>
+          <div class="skeleton-line" style="height:80px;"></div>
+        </div>`;
+      grid.innerHTML = skeleton.repeat(6);
+    }
+
+    function mostrarErro() {
+      const grid = document.getElementById('fiisGrid');
+      grid.innerHTML = `
+        <div class="erro-box" style="grid-column:1/-1;">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <p><strong>Não foi possível buscar os dados em tempo real.</strong></p>
+          <p style="margin-top:8px;">Verifique se o servidor está rodando e tente novamente clicando em <strong>Atualizar Fundos</strong>.</p>
+        </div>`;
+    }
+
+    /* ============================================================
+       INICIALIZAÇÃO — busca automática ao carregar a página
+    ============================================================ */
+    window.addEventListener('load', () => {
+      buscarFIIs();
+    });
+  </script>
+
+</body>
+
+</html>

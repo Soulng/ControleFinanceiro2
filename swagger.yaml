@@ -1,0 +1,108 @@
+openapi: 3.0.3
+
+info:
+  title: Finance Easy - API de Exportacao
+  description: |
+    API para exportar os dados financeiros do Financial Easy em Excel (CSV) ou PDF.
+
+      **O que é exportado:**
+    - Resumo do dashboard (saldo atual, total de receitas, total de despesas, quantidade de transações)
+    - Todas as transações (código, data, descrição, categoria, tipo, valor)
+    - Todas as metas financeiras (nome, descrição, valor total, valor guardado, progresso)
+  version: 1.0.0
+  contact:
+    name: Finance Easy
+
+servers:
+  - url: http://localhost:8080/ControleFinanceiro2
+    description: USBWebServer local
+
+paths:
+  /exportar.php:
+    get:
+      summary: Exportar dados financeiros
+      description: |
+        Retorna um arquivo para download com todos os dados:
+        transações e metas financeiras.
+
+       
+      operationId: exportarDados
+      parameters:
+        - name: formato
+          in: query
+          required: true
+          description: Formato do arquivo de exportacao
+          schema:
+            type: string
+            enum:
+              - excel
+              - pdf
+          example: excel
+
+      responses:
+        '200':
+          description: Arquivo gerado com sucesso (download iniciado)
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+              example: |
+                === RESUMO DO DASHBOARD ===
+                Saldo Atual; R$ 175,00
+                Total de Receitas; R$ 550,00
+                ...
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+
+        '400':
+          description: Parametro "formato" ausente ou invalido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+              example:
+                success: false
+                error: "Use: ?formato=excel  ou  ?formato=pdf"
+                links:
+                  excel: "exportar.php?formato=excel"
+                  pdf:   "exportar.php?formato=pdf"
+
+        '503':
+          description: FPDF nao instalado (apenas para formato=pdf)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+              example:
+                success: false
+                error: "FPDF nao encontrado em /codigos/fpdf/fpdf.php"
+                solucao: "Baixe em https://www.fpdf.org e coloque a pasta fpdf/ dentro de /codigos/"
+
+components:
+  schemas:
+    Erro:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: "Mensagem de erro"
+        links:
+          type: object
+          description: Links uteis (presente quando o formato e invalido)
+          properties:
+            excel:
+              type: string
+              example: "exportar.php?formato=excel"
+            pdf:
+              type: string
+              example: "exportar.php?formato=pdf"
+        solucao:
+          type: string
+          description: Instrucao para resolver o problema (presente em erros 503)
+          example: "Baixe em https://www.fpdf.org e coloque a pasta fpdf/ dentro de /codigos/"

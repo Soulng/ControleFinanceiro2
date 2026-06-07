@@ -1,0 +1,601 @@
+/* ═══════════════════════════════════════════════════════════
+   Finance Easy — cssUsuario/style.css
+   Tema claro + Dark Mode via [data-tema="escuro"]
+═══════════════════════════════════════════════════════════ */
+
+/* ── Reset & base ─────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font);
+  font-size: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color var(--transition), color var(--transition);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:root {
+  --bg:           #F9E8C6;
+  --surface:      #FFFFFF;
+  --surface-alt:  #F4F4F4;
+  --border:       #E0E0E0;
+  --text:         #1A1A1A;
+  --text-muted:   #666666;
+  --accent:       #2A9D8F;
+  --accent-hover: #227f74;
+  --danger:       #E76F51;
+  --shadow:       0 2px 12px rgba(0,0,0,0.08);
+  --radius:       14px;
+  --font:         'Montserrat', sans-serif;
+  --transition:   .2s ease;
+}
+
+/* ── Dark Mode — mesmo padrão do dashboard/investimentos ── */
+[data-tema="escuro"] {
+  --bg:          #0f1923;
+  --surface:     #1a2635;
+  --surface-alt: #0f1923;
+  --border:      #1f2f40;
+  --text:        #F0F0F0;
+  --text-muted:  #999999;
+  --shadow:      0 2px 16px rgba(0,0,0,0.4);
+}
+
+/* ── Navbar lateral ───────────────────────────────────── */
+nav.menu-lateral {
+  width: 70px;
+  height: 100vh;
+  background-color: var(--surface);
+  padding: 40px 0 20px;
+  border-radius: 0 18px 18px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  transition: width var(--transition), background-color var(--transition);
+  z-index: 100;
+  box-shadow: var(--shadow);
+}
+
+nav.menu-lateral.expandir {
+  width: 200px;
+}
+
+nav.menu-lateral ul {
+  margin-top: 30px;
+}
+
+.btn-expandir {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 10px 20px;
+}
+
+.btn-expandir.expandir {
+  justify-content: flex-start;
+  padding-left: 24px;
+}
+
+.btn-expandir i {
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 24px;
+  transition: transform var(--transition);
+}
+
+.btn-expandir:hover i {
+  transform: scale(1.05);
+}
+
+ul li.item-menu a {
+  color: var(--text);
+  font-size: 16px;
+  padding: 16px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+ul li.ativo {
+  background-color: var(--accent);
+  border-radius: 15px;
+}
+
+nav.menu-lateral .icone-menu-lat {
+  width: 32px;
+  display: grid;
+  place-items: center;
+}
+
+nav.menu-lateral .txt-link-menu-lat {
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity var(--transition), margin-left var(--transition);
+}
+
+nav.menu-lateral.expandir .txt-link-menu-lat {
+  opacity: 1;
+}
+
+ul li.ativo a { color: #fff; }
+
+ul li.item-menu:hover:not(.ativo) {
+  background-color: var(--surface-alt);
+  border-radius: 15px;
+}
+
+ul li.item-menu a .txt-link-menu-lat { margin-left: 50px; transition: .2s; }
+nav.menu-lateral.expandir .txt-link-menu-lat { margin-left: 20px; }
+
+/* ── Layout principal ─────────────────────────────────── */
+.main-content {
+  margin-left: 90px;
+  padding: 30px 28px 30px 20px;
+  display: grid;
+  grid-template-columns: 360px minmax(520px, 1fr);
+  grid-template-rows: auto auto;
+  gap: 20px;
+  min-height: 100vh;
+  max-width: min(1360px, calc(100vw - 90px));
+  transition: margin-left var(--transition), max-width var(--transition);
+  position: relative;
+}
+
+.main-content.expandir {
+  margin-left: 220px;
+}
+
+/* ── Colunas ──────────────────────────────────────────── */
+.col-left {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 20px;
+  grid-row: 1 / 3;
+}
+
+.col-right {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 20px;
+  grid-row: 1 / 3;
+}
+
+/* ── Cards base ───────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  transition: background-color var(--transition), box-shadow var(--transition);
+}
+
+.card-titulo {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.card-divider {
+  border: none;
+  border-top: 2px solid var(--accent);
+  margin-bottom: 16px;
+}
+
+/* ── Card Perfil ──────────────────────────────────────── */
+.card-perfil {
+  padding: 26px;
+  border-radius: 28px;
+}
+
+.perfil-avatar-wrap {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 18px;
+}
+
+.avatar-img {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent);
+  background: var(--surface-alt);
+}
+
+.perfil-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.perfil-info .perfil-nome {
+  font-size: 20px;
+}
+
+.perfil-info .btn-foto {
+  justify-self: start;
+}
+
+.perfil-nome {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.perfil-cargo {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.btn-foto {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: background var(--transition);
+}
+.btn-foto:hover { background: var(--accent-hover); }
+
+/* ── Card Dados ───────────────────────────────────────── */
+.card-dados {
+  flex: 1;
+  padding: 24px;
+  border-radius: 28px;
+}
+
+.dado-item {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.dado-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.dado-valor-box {
+  background: var(--surface-alt);
+  border-radius: 999px;
+  padding: 16px 22px;
+  font-size: 14px;
+  color: var(--text);
+  border: 1px solid var(--border);
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  transition: background var(--transition), border var(--transition);
+}
+
+/* ── Card Resumo Financeiro ───────────────────────────── */
+.card-resumo {
+  padding: 28px;
+  border-radius: 28px;
+}
+
+.resumo-body {
+  display: grid;
+  grid-template-columns: 1fr minmax(260px, 360px);
+  gap: 24px;
+  align-items: start;
+}
+
+.resumo-metricas {
+  display: grid;
+  gap: 18px;
+}
+
+.metrica-item {
+  display: grid;
+  gap: 8px;
+}
+
+.metrica-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.metrica-valor-box {
+  background: var(--surface-alt);
+  border-radius: 28px;
+  padding: 18px 22px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  border: 1px solid var(--border);
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  transition: background var(--transition), border var(--transition);
+}
+
+.metrica-valor-box.receita { border-left: 6px solid var(--accent); }
+.metrica-valor-box.despesa { border-left: 6px solid var(--danger); }
+
+.resumo-grafico {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  padding: 24px;
+  background: var(--surface-alt);
+  border-radius: 28px;
+  min-height: 320px;
+}
+
+.grafico-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 18px;
+}
+
+.chart-wrap {
+  width: 260px;
+  height: 260px;
+}
+
+/* ── Card Metas ───────────────────────────────────────── */
+.card-metas {
+  padding: 24px;
+  border-radius: 28px;
+}
+
+.meta-row {
+  margin-bottom: 18px;
+}
+
+.meta-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.meta-nome {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.meta-pct {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.meta-barra-bg {
+  width: 100%;
+  height: 10px;
+  background: var(--surface-alt);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.meta-barra-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 6px;
+  transition: width .5s ease;
+}
+
+.sem-dados {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* ── Page Header — mesmo estilo investimentos/dashboard ── */
+:root { --verde: #2A9D8F; }
+
+.page-header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 18px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 14px var(--shadow);
+  transition: background var(--transition);
+}
+
+.page-header h1 { font-size: 22px; color: var(--text); }
+
+.page-header-direita { display: flex; align-items: center; gap: 14px; }
+.page-header-direita span { font-size: 14px; color: var(--text-muted); }
+
+.btn-tema {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--surface-alt);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  border-radius: 30px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: .3s;
+  white-space: nowrap;
+}
+.btn-tema:hover { border-color: var(--verde); color: var(--verde); }
+.btn-tema i { font-size: 14px; }
+
+/* ── Modal Foto ───────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-box {
+  background: var(--surface);
+  width: 92%;
+  max-width: 500px;
+  border-radius: var(--radius);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header h4 { font-size: 16px; color: var(--text); }
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.modal-body { padding: 20px; }
+
+.modal-label {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-alt);
+  color: var(--text);
+  margin-bottom: 14px;
+  font-family: var(--font);
+}
+
+.modal-preview-wrap {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.modal-preview {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  background: var(--surface-alt);
+  flex-shrink: 0;
+}
+
+.modal-dicas { flex: 1; font-size: 13px; color: var(--text-muted); }
+.modal-dicas ul { margin: 6px 0 10px 12px; line-height: 1.8; }
+
+.modal-check-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.modal-erro {
+  margin-top: 10px;
+  color: var(--danger);
+  font-size: 13px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  justify-content: flex-end;
+}
+
+/* ── Botões gerais ────────────────────────────────────── */
+.btn-primary {
+  padding: 9px 18px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.btn-primary:hover:not(:disabled) { background: var(--accent-hover); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-secondary {
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-alt);
+  color: var(--text);
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.btn-secondary:hover { background: var(--border); }
+
+/* ── Responsivo ───────────────────────────────────────── */
+@media (max-width: 860px) {
+  .main-content {
+    grid-template-columns: 1fr;
+    padding: 20px 16px;
+  }
+  .col-left { grid-row: auto; }
+  .resumo-body { flex-direction: column; align-items: stretch; }
+  .resumo-grafico { align-items: center; }
+}

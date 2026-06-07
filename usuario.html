@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance Easy - Usuário</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300..900&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="cssUsuario/style.css">
+  <link rel="stylesheet" href="PopUp/toast.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+  <!-- ── NAVBAR ── -->
+  <nav class="menu-lateral">
+    <div class="btn-expandir" id="bt-exp">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+    <ul>
+      <li class="item-menu">
+        <a href="home.html">
+          <span class="icone-menu-lat"><i class="fa-solid fa-house"></i></span>
+          <span class="txt-link-menu-lat">Início</span>
+        </a>
+      </li>
+      <li class="item-menu">
+        <a href="dashboard.html">
+          <span class="icone-menu-lat"><i class="fa-solid fa-chart-simple"></i></span>
+          <span class="txt-link-menu-lat">Gráficos</span>
+        </a>
+      </li>
+      <li class="item-menu">
+        <a href="metas.html">
+          <span class="icone-menu-lat"><i class="fa-solid fa-list-check"></i></span>
+          <span class="txt-link-menu-lat">Metas</span>
+        </a>
+      </li>
+      <li class="item-menu">
+        <a href="investimentos.html">
+          <span class="icone-menu-lat"><i class="fa-solid fa-building"></i></span>
+          <span class="txt-link-menu-lat">Investimentos</span>
+        </a>
+      </li>
+      <li class="item-menu ativo">
+        <a href="#">
+          <span class="icone-menu-lat"><i class="fa-solid fa-user"></i></span>
+          <span class="txt-link-menu-lat">Perfil</span>
+        </a>
+      </li>
+      <li class="item-menu" id="btn-logout">
+        <a href="#">
+          <span class="icone-menu-lat"><i class="fa-solid fa-right-from-bracket"></i></span>
+          <span class="txt-link-menu-lat">Sair</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ── CONTEÚDO PRINCIPAL ── -->
+  <div class="main-content" id="main-content">
+
+    <!-- ── HEADER DA PÁGINA ── -->
+    <div class="page-header">
+      <h1><i class="fa-solid fa-user" style="color:var(--verde);margin-right:10px;"></i>Meu Perfil</h1>
+      <div class="page-header-direita">
+        <span id="dataAtual"></span>
+        <button class="btn-tema" id="btnTema" onclick="alternarTema()">
+          <i class="fa-solid fa-moon" id="iconeTema"></i>
+          <span id="textoTema">Modo Escuro</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── COLUNA ESQUERDA ── -->
+    <div class="col-left">
+
+      <!-- Card Perfil -->
+      <div class="card card-perfil">
+        <div class="perfil-avatar-wrap">
+          <img id="avatarImg" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256' viewBox='0 0 256 256'><rect width='256' height='256' fill='%23e0e0e0'/><circle cx='128' cy='96' r='44' fill='%239aa1a9'/><path d='M32 224c0-40 40-72 96-72s96 32 96 72' fill='%239aa1a9'/></svg>" alt="Avatar" class="avatar-img">
+          <div class="perfil-info">
+            <h2 class="perfil-nome" id="user-nome">Carregando...</h2>
+            <p class="perfil-cargo" id="user-ocupacao">—</p>
+            <button class="btn-foto" id="btnAlterar">
+              <i class="fa-solid fa-camera"></i> Atualizar Foto
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Dados do Usuário -->
+      <div class="card card-dados">
+        <h3 class="card-titulo">Dados do Usuário</h3>
+        <hr class="card-divider">
+
+        <div class="dado-item">
+          <span class="dado-label">Nome</span>
+          <div class="dado-valor-box" id="display-nome">—</div>
+        </div>
+        <div class="dado-item">
+          <span class="dado-label">Email</span>
+          <div class="dado-valor-box" id="display-email">—</div>
+        </div>
+        <div class="dado-item">
+          <span class="dado-label">Profissão</span>
+          <div class="dado-valor-box" id="display-ocupacao">—</div>
+        </div>
+        <div class="dado-item">
+          <span class="dado-label">Idade</span>
+          <div class="dado-valor-box" id="display-idade">—</div>
+        </div>
+        <div class="dado-item">
+          <span class="dado-label">Moeda Utilizada</span>
+          <div class="dado-valor-box" id="display-moeda">BRL – Real brasileiro (R$)</div>
+        </div>
+        <div class="dado-item">
+          <span class="dado-label">Criação da Conta</span>
+          <div class="dado-valor-box" id="display-criacao">—</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── COLUNA DIREITA ── -->
+    <div class="col-right">
+
+      <!-- Card Resumo Financeiro -->
+      <div class="card card-resumo">
+        <div class="resumo-header">
+          <h3 class="card-titulo">Resumo Financeiro</h3>
+        </div>
+        <hr class="card-divider">
+
+        <div class="resumo-body">
+          <!-- Métricas -->
+          <div class="resumo-metricas">
+            <div class="metrica-item">
+              <span class="metrica-label">Saldo Atual</span>
+              <div class="metrica-valor-box" id="saldo-atual">R$ 0,00</div>
+            </div>
+            <div class="metrica-item">
+              <span class="metrica-label">Total de Receita</span>
+              <div class="metrica-valor-box receita" id="total-receita">R$ 0,00</div>
+            </div>
+            <div class="metrica-item">
+              <span class="metrica-label">Total de Despesa</span>
+              <div class="metrica-valor-box despesa" id="total-despesa">R$ 0,00</div>
+            </div>
+          </div>
+
+          <!-- Gráfico Donut -->
+          <div class="resumo-grafico">
+            <span class="grafico-label">Receita × Despesa</span>
+            <div class="chart-wrap">
+              <canvas id="chartDonut"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Resumo de Metas -->
+      <div class="card card-metas">
+        <h3 class="card-titulo">Resumo de Metas</h3>
+        <hr class="card-divider">
+        <div id="metas-lista">
+          <p class="sem-dados">Carregando metas...</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── MODAL FOTO ── -->
+  <div id="modalOverlay" class="modal-overlay" style="display:none;">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <h4 id="modalTitle">Alterar foto de perfil</h4>
+        <button id="btnCloseModal" class="modal-close" aria-label="Fechar">×</button>
+      </div>
+      <div class="modal-body">
+        <label for="inputArquivo" class="modal-label">Selecionar imagem</label>
+        <input id="inputArquivo" type="file" accept="image/*" class="modal-input">
+        <div class="modal-preview-wrap">
+          <img id="previewImg" src="" alt="Prévia" class="modal-preview">
+          <div class="modal-dicas">
+            <p>Dicas:</p>
+            <ul>
+              <li>Formatos: JPG, PNG, WEBP, GIF</li>
+              <li>Tamanho máximo: 5 MB</li>
+            </ul>
+            <label class="modal-check-label">
+              <input id="chkCircular" type="checkbox" checked>
+              <span>Exibir como circular</span>
+            </label>
+          </div>
+        </div>
+        <p id="erroMsg" class="modal-erro" style="display:none;">Arquivo inválido. Tente outro.</p>
+        <div class="modal-actions">
+          <button id="btnAplicar" disabled class="btn-primary">Aplicar</button>
+          <button id="btnCancelar" class="btn-secondary">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="PopUp/toast.js"></script>
+  <script src="javascriptUsuario/script.js"></script>
+  <script>
+    // ── Dark Mode (padrão dashboard/investimentos) ────────────
+    function aplicarTema(tema) {
+      document.documentElement.setAttribute('data-tema', tema);
+      const escuro = tema === 'escuro';
+      document.getElementById('iconeTema').className = escuro ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      document.getElementById('textoTema').textContent = escuro ? 'Modo Claro' : 'Modo Escuro';
+      localStorage.setItem('financeTema', tema);
+    }
+    function alternarTema() {
+      const atual = document.documentElement.getAttribute('data-tema');
+      aplicarTema(atual === 'escuro' ? 'claro' : 'escuro');
+    }
+    aplicarTema(localStorage.getItem('financeTema') || 'claro');
+
+    document.getElementById('dataAtual').textContent =
+      new Date().toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+    // ── Avatar ────────────────────────────────────────────────
+    const PLACEHOLDER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256' viewBox='0 0 256 256'><rect width='256' height='256' fill='%23e0e0e0'/><circle cx='128' cy='96' r='44' fill='%239aa1a9'/><path d='M32 224c0-40 40-72 96-72s96 32 96 72' fill='%239aa1a9'/></svg>";
+
+    const avatarImg     = document.getElementById('avatarImg');
+    const btnAlterar    = document.getElementById('btnAlterar');
+    const modalOverlay  = document.getElementById('modalOverlay');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+    const btnCancelar   = document.getElementById('btnCancelar');
+    const inputArquivo  = document.getElementById('inputArquivo');
+    const previewImg    = document.getElementById('previewImg');
+    const chkCircular   = document.getElementById('chkCircular');
+    const btnAplicar    = document.getElementById('btnAplicar');
+    const erroMsg       = document.getElementById('erroMsg');
+
+    let tempURL = null;
+
+    // Restaurar avatar salvo
+    const savedAvatar = localStorage.getItem('avatarBase64');
+    if (savedAvatar) { avatarImg.src = savedAvatar; }
+
+    function abrirModal() {
+      modalOverlay.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      inputArquivo.value = '';
+      previewImg.src = '';
+      btnAplicar.disabled = true;
+      erroMsg.style.display = 'none';
+      chkCircular.checked = true;
+      previewImg.style.borderRadius = '50%';
+    }
+    function fecharModal() {
+      modalOverlay.style.display = 'none';
+      document.body.style.overflow = '';
+      if (tempURL) { URL.revokeObjectURL(tempURL); tempURL = null; }
+    }
+
+    inputArquivo.addEventListener('change', () => {
+      const file = inputArquivo.files?.[0];
+      if (!file) return;
+      const ok = ['image/jpeg','image/png','image/webp','image/gif'].includes(file.type) && file.size <= 5*1024*1024;
+      if (!ok) { erroMsg.style.display = 'block'; btnAplicar.disabled = true; return; }
+      erroMsg.style.display = 'none';
+      tempURL = URL.createObjectURL(file);
+      previewImg.src = tempURL;
+      btnAplicar.disabled = false;
+    });
+
+    chkCircular.addEventListener('change', () => {
+      previewImg.style.borderRadius = chkCircular.checked ? '50%' : '8px';
+    });
+
+    btnAplicar.addEventListener('click', async () => {
+      if (!tempURL || !inputArquivo.files?.[0]) return;
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const b64 = reader.result;
+        avatarImg.src = b64;
+        localStorage.setItem('avatarBase64', b64);
+        fecharModal();
+        showToast('success', 'Foto de perfil atualizada!');
+      };
+      reader.readAsDataURL(inputArquivo.files[0]);
+    });
+
+    btnAlterar.addEventListener('click', abrirModal);
+    btnCloseModal.addEventListener('click', fecharModal);
+    btnCancelar.addEventListener('click', fecharModal);
+    modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) fecharModal(); });
+
+    // ── Donut Chart ───────────────────────────────────────────
+    let donutChart = null;
+
+    function renderDonut(receita, despesa) {
+      const ctx = document.getElementById('chartDonut').getContext('2d');
+      if (donutChart) donutChart.destroy();
+      donutChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Receita', 'Despesa'],
+          datasets: [{
+            data: [receita || 0, despesa || 0],
+            backgroundColor: ['#2A9D8F', '#E76F51'],
+            borderWidth: 0,
+            hoverOffset: 6
+          }]
+        },
+        options: {
+          cutout: '65%',
+          plugins: { legend: { display: false }, tooltip: { callbacks: {
+            label: ctx => ` R$ ${ctx.parsed.toLocaleString('pt-BR', {minimumFractionDigits:2})}`
+          }}},
+          responsive: true,
+          maintainAspectRatio: true
+        }
+      });
+    }
+
+    // ── Carregar dados ────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', async () => {
+
+      // Usuário
+      try {
+        const r = await fetch(`${API_BASE}/get_user.php`, { credentials: 'same-origin' });
+        const d = await r.json();
+        if (d.success) {
+          const u = d.user;
+          document.getElementById('user-nome').textContent     = u.nome;
+          document.getElementById('user-ocupacao').textContent = u.ocupacao || 'Não informado';
+          document.getElementById('display-nome').textContent  = u.nome;
+          document.getElementById('display-email').textContent = u.email;
+          document.getElementById('display-ocupacao').textContent = u.ocupacao || 'Não informado';
+          document.getElementById('display-idade').textContent = u.idade ? `${u.idade} anos` : '—';
+
+          // Data de nascimento formatada como criação — ajuste se o campo mudar
+          if (u.data_nascimento) {
+            const [y,m,dd] = u.data_nascimento.split('-');
+            document.getElementById('display-criacao').textContent = dd ? `${dd}/${m}/${y}` : u.data_nascimento;
+          }
+        } else if (d.redirect) {
+          window.location.href = d.redirect;
+        }
+      } catch(e) { console.error('Erro usuário:', e); }
+
+      // Transações → saldo, receita, despesa
+      try {
+        const r = await fetch(`${API_BASE}/get_transacoes.php`, { credentials: 'same-origin' });
+        const d = await r.json();
+        if (d.success) {
+          let receita = 0, despesa = 0;
+          d.transacoes.forEach(t => {
+            if (t.tipo === 'receita') receita += t.valor;
+            else despesa += t.valor;
+          });
+          const saldo = receita - despesa;
+          const fmt = v => `R$ ${Math.abs(v).toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+          document.getElementById('saldo-atual').textContent   = (saldo < 0 ? '-' : '') + fmt(saldo);
+          document.getElementById('total-receita').textContent = fmt(receita);
+          document.getElementById('total-despesa').textContent = fmt(despesa);
+          renderDonut(receita, despesa);
+        }
+      } catch(e) { console.error('Erro transações:', e); }
+
+      // Metas
+      try {
+        const r = await fetch(`${API_BASE}/get_metas.php`, { credentials: 'same-origin' });
+        const d = await r.json();
+        const lista = document.getElementById('metas-lista');
+        if (d.success && d.metas.length > 0) {
+          lista.innerHTML = '';
+          // Mostrar até 5 metas
+          d.metas.slice(0, 5).forEach(m => {
+            const pct = Math.round(m.progresso);
+            const div = document.createElement('div');
+            div.className = 'meta-row';
+            div.innerHTML = `
+              <div class="meta-info">
+                <span class="meta-nome">${m.nome}</span>
+                <span class="meta-pct">${pct}%</span>
+              </div>
+              <div class="meta-barra-bg">
+                <div class="meta-barra-fill" style="width:${pct}%"></div>
+              </div>
+            `;
+            lista.appendChild(div);
+          });
+        } else {
+          lista.innerHTML = '<p class="sem-dados">Nenhuma meta cadastrada.</p>';
+        }
+      } catch(e) { console.error('Erro metas:', e); }
+    });
+  </script>
+
+</body>
+</html>

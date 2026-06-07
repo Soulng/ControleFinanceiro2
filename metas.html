@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Finance Easy - Metas</title>
+  <link rel="stylesheet" href="cssMetas/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="PopUp/toast.css">
+</head>
+
+<body>
+  <nav class="menu-lateral">
+
+    <div class="btn-expandir" id="bt-exp">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+
+    <ul>
+      <li class="item-menu">
+        <a href="home.html">
+          <span class="icone-menu-lat"><i class="fa-solid fa-house"></i></span>
+          <span class="txt-link-menu-lat">Início</span>
+        </a>
+      </li>
+
+      <li class="item-menu">
+        <a href="dashboard.html">
+          <span class="icone-menu-lat"><i class="fa-solid fa-chart-simple"></i></span>
+          <span class="txt-link-menu-lat">Gráficos</span>
+        </a>
+      </li>
+
+      <li class="item-menu ativo">
+        <a href="#">
+          <span class="icone-menu-lat"><i class="fa-solid fa-list-check"></i></span>
+          <span class="txt-link-menu-lat">Metas</span>
+        </a>
+      </li>
+
+      <li class="item-menu">
+        <a href="investimentos.html">
+          <span class="icone-menu-lat"><i class="fa-solid fa-building"></i></span>
+          <span class="txt-link-menu-lat">Investimentos</span>
+        </a>
+      </li>
+
+      <li class="item-menu">
+        <a href="usuario.html">
+          <span class="icone-menu-lat"><i class="fa-solid fa-user"></i></span>
+          <span class="txt-link-menu-lat">Perfil</span>
+        </a>
+      </li>
+
+      <li class="item-menu" id="btn-logout">
+        <a href="#">
+            <span class="icone-menu-lat"><i class="fa-solid fa-right-from-bracket"></i></span>
+            <span class="txt-link-menu-lat">Sair</span>
+        </a>
+    </li>
+    </ul>
+  </nav>
+
+  <div class="top-bar">
+    <div class="user-photo" onclick="abrirModalFoto()">
+      <img id="fotoUsuario" src="" alt="Foto do usuário" style="display: none;">
+      <div id="fotoPadrao" class="foto-placeholder">+</div>
+    </div>
+    <div class="top-text">
+      <h2>Adicione mais metas ou veja seu progresso!</h2>
+      <button onclick="removerFotoUsuario()"></button>
+    </div>
+  </div>
+
+  <!-- Modal de foto de perfil -->
+  <div id="modalFoto" class="modal">
+    <div class="modal-content">
+      <h3>Foto de Perfil</h3>
+      <input type="text" id="urlFotoPerfil" placeholder="URL da imagem">
+      <button class="save-btn" onclick="salvarFotoUsuario()">Salvar</button>
+      <button class="close-btn" onclick="fecharModalFoto()">Cancelar</button>
+    </div>
+  </div>
+  <h1> Minhas Metas Financeiras</h1>
+  <p></p>
+
+  <div class="metas-container" id="metas"></div>
+
+  <button class="add-button" onclick="abrirModal()">+</button>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h3 id="modal-title">Nova Meta</h3>
+      <input type="text" id="nome" placeholder="Nome da meta">
+      <input type="text" id="descricao" placeholder="Descrição">
+      <input type="number" id="valorTotal" placeholder="Valor total">
+      <input type="number" id="valorAtual" placeholder="Valor guardado">
+      <input type="text" id="iconeURL" placeholder="URL da imagem (opcional)">
+      <button class="save-btn" onclick="salvarMeta()">Salvar</button>
+      <button class="close-btn" onclick="fecharModal()">Cancelar</button>
+    </div>
+  </div>
+  <script src="PopUp/toast.js"></script>
+  <script src="javascriptMetas/script.js"></script>
+</body>
+
+</html>
