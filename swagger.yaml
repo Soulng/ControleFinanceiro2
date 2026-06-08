@@ -3,30 +3,41 @@ openapi: 3.0.3
 info:
   title: Finance Easy - API de Exportacao
   description: |
-    API para exportar os dados financeiros do Financial Easy em Excel (CSV) ou PDF.
+    API para exportar os dados financeiros do Finance Easy em Excel (CSV) ou PDF.
 
-      **O que é exportado:**
+    **Autenticação:** Esta API utiliza sessão PHP via cookie (`PHPSESSID`).
+    Você precisa estar logado no sistema para usar os endpoints.
+    Faça login normalmente pelo site antes de testar aqui.
+
+    **O que é exportado:**
     - Resumo do dashboard (saldo atual, total de receitas, total de despesas, quantidade de transações)
-    - Todas as transações (código, data, descrição, categoria, tipo, valor)
-    - Todas as metas financeiras (nome, descrição, valor total, valor guardado, progresso)
-  version: 1.0.0
+    - Todas as transações do usuário logado (código, data, descrição, categoria, tipo, valor)
+    - Todas as metas financeiras do usuário logado (nome, descrição, valor total, valor guardado, progresso)
+  version: 2.0.0
   contact:
     name: Finance Easy
 
 servers:
-  - url: http://localhost:8080/ControleFinanceiro2
+  - url: http://localhost:8080/ControleFinanceiro2-carlos_branch
     description: USBWebServer local
+
+security:
+  - cookieAuth: []
 
 paths:
   /exportar.php:
     get:
-      summary: Exportar dados financeiros
+      summary: Exportar dados financeiros do usuário logado
       description: |
-        Retorna um arquivo para download com todos os dados:
+        Retorna um arquivo para download com todos os dados do usuário autenticado:
         transações e metas financeiras.
 
-       
+        **Requer sessão ativa** — faça login pelo site antes de usar.
+        O usuário é identificado automaticamente pelo cookie de sessão (`PHPSESSID`).
+
       operationId: exportarDados
+      security:
+        - cookieAuth: []
       parameters:
         - name: formato
           in: query
@@ -49,16 +60,33 @@ paths:
                 format: binary
               example: |
                 === RESUMO DO DASHBOARD ===
+                Data de exportacao; 01/06/2025 10:00:00
                 Saldo Atual; R$ 175,00
                 Total de Receitas; R$ 550,00
-                ...
+                Total de Despesas; R$ 375,00
+                Total de Transacoes; 5
+
+                === TRANSACOES ===
+                Codigo; Data; Descricao; Categoria; Tipo; Valor (R$)
+                1001; 01/06/2025; Salario; Trabalho; Receita; 3.000,00
             application/pdf:
               schema:
                 type: string
                 format: binary
 
+        '401':
+          description: Sessão inválida ou expirada — faça login novamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+              example:
+                success: false
+                error: "Sessão inválida. Faça login."
+                redirect: "index.html"
+
         '400':
-          description: Parametro "formato" ausente ou invalido
+          description: Parâmetro "formato" ausente ou inválido
           content:
             application/json:
               schema:
@@ -71,7 +99,7 @@ paths:
                   pdf:   "exportar.php?formato=pdf"
 
         '503':
-          description: FPDF nao instalado (apenas para formato=pdf)
+          description: FPDF não instalado (apenas para formato=pdf)
           content:
             application/json:
               schema:
@@ -82,6 +110,16 @@ paths:
                 solucao: "Baixe em https://www.fpdf.org e coloque a pasta fpdf/ dentro de /codigos/"
 
 components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: PHPSESSID
+      description: |
+        Cookie de sessão PHP gerado automaticamente após o login.
+        Faça login pelo site (index.html) e o cookie será enviado
+        automaticamente pelo navegador nas requisições desta aba.
+
   schemas:
     Erro:
       type: object
@@ -92,6 +130,10 @@ components:
         error:
           type: string
           example: "Mensagem de erro"
+        redirect:
+          type: string
+          description: URL de redirecionamento (presente em erros de autenticação)
+          example: "index.html"
         links:
           type: object
           description: Links uteis (presente quando o formato e invalido)

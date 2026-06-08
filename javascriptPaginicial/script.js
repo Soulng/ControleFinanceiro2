@@ -41,11 +41,30 @@ btnFecharFormAdd.addEventListener('click', function () {
     document.querySelector('.popup-form-add').style.display = 'none';
 });
 
-// ── Exibe nome do usuário ──────────────────────────────────
+// ── Exibe nome e foto do usuário logado ───────────────────
 const nomeDisplay = document.getElementById('user-nome-display');
-if (nomeDisplay) {
-    nomeDisplay.textContent = localStorage.getItem('currentUserName') || '';
+const userPic     = document.querySelector('.user-pic');
+
+// Foto: sincroniza com o avatar salvo na página de perfil
+if (userPic) {
+    const savedAvatar = localStorage.getItem('avatarBase64');
+    if (savedAvatar) userPic.src = savedAvatar;
 }
+
+// Nome: tenta primeiro via API, fallback no localStorage
+(async () => {
+    try {
+        const r = await fetch('get_user.php', { credentials: 'same-origin' });
+        const d = await r.json();
+        if (d.success && d.user?.nome) {
+            if (nomeDisplay) nomeDisplay.textContent = d.user.nome;
+            localStorage.setItem('currentUserName', d.user.nome);
+            return;
+        }
+        if (d.redirect) { window.location.href = d.redirect; return; }
+    } catch(e) { /* silencioso — usa fallback */ }
+    if (nomeDisplay) nomeDisplay.textContent = localStorage.getItem('currentUserName') || '';
+})();
 
 // ── Estado local de transações ────────────────────────────
 let transacoes = [];
