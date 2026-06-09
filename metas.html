@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-tema="claro">
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Finance Easy - Metas</title>
   <link rel="stylesheet" href="cssMetas/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
     integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-
   <link
     href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
     rel="stylesheet">
@@ -16,8 +16,8 @@
 </head>
 
 <body>
+  <!-- MENU LATERAL -->
   <nav class="menu-lateral">
-
     <div class="btn-expandir" id="bt-exp">
       <i class="fa-solid fa-bars"></i>
     </div>
@@ -60,55 +60,171 @@
 
       <li class="item-menu" id="btn-logout">
         <a href="#">
-            <span class="icone-menu-lat"><i class="fa-solid fa-right-from-bracket"></i></span>
-            <span class="txt-link-menu-lat">Sair</span>
+          <span class="icone-menu-lat"><i class="fa-solid fa-right-from-bracket"></i></span>
+          <span class="txt-link-menu-lat">Sair</span>
         </a>
-    </li>
+      </li>
     </ul>
   </nav>
 
-  <div class="top-bar">
-    <div class="user-photo" onclick="abrirModalFoto()">
-      <img id="fotoUsuario" src="" alt="Foto do usuário" style="display: none;">
-      <div id="fotoPadrao" class="foto-placeholder">+</div>
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="main-content">
+    <!-- CABEÇALHO COM CONTROLES -->
+    <div class="page-header-container">
+      <h1><i class="fa-solid fa-list-check" style="color: var(--verde); margin-right: 10px;"></i>Minhas Metas Financeiras</h1>
+      <div class="header-controls">
+        <button class="btn-tema" id="btnTema" onclick="alternarTema()">
+          <i class="fa-solid fa-moon" id="iconeTema"></i>
+          <span id="textoTema">Modo Escuro</span>
+        </button>
+      </div>
     </div>
-    <div class="top-text">
-      <h2>Adicione mais metas ou veja seu progresso!</h2>
-      <button onclick="removerFotoUsuario()"></button>
+
+    <!-- CARROSSEL DE DICAS -->
+    <div class="dicas-carousel">
+      <div class="dicas-container">
+        <div class="dica-card" id="dicaAtual">
+          <div class="dica-icon">
+            <i class="fa-solid fa-lightbulb"></i>
+          </div>
+          <div class="dica-content">
+            <h3 id="dicaTitulo">Dica Financeira</h3>
+            <p id="dicaTexto">Carregando dicas...</p>
+          </div>
+        </div>
+      </div>
+      <button class="dica-nav dica-prev" onclick="dicaAnterior()">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+      <button class="dica-nav dica-next" onclick="proximaDica()">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+      <div class="dica-dots" id="dicaDots"></div>
+    </div>
+
+    <!-- CONTAINER DE METAS -->
+    <div class="metas-container" id="metas"></div>
+
+    <!-- BOTÃO FLUTUANTE PARA ADICIONAR META -->
+    <button class="add-button" onclick="abrirModal()" title="Adicionar nova meta">+</button>
+
+    <!-- Modal para adicionar/editar meta -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <h3 id="modal-title">Nova Meta</h3>
+        <input type="text" id="nome" placeholder="Nome da meta (ex: Viagem)">
+        <input type="text" id="descricao" placeholder="Descrição (ex: Viagem para o Japão)">
+        <input type="number" id="valorTotal" placeholder="Valor total (R$)" min="0" step="0.01">
+        <input type="number" id="valorAtual" placeholder="Valor guardado (R$)" min="0" step="0.01">
+        <input type="text" id="iconeURL" placeholder="URL da imagem (opcional)">
+        <button class="save-btn" onclick="salvarMeta()">Salvar Meta</button>
+        <button class="close-btn" onclick="fecharModal()">Cancelar</button>
+      </div>
     </div>
   </div>
 
-  <!-- Modal de foto de perfil -->
-  <div id="modalFoto" class="modal">
-    <div class="modal-content">
-      <h3>Foto de Perfil</h3>
-      <input type="text" id="urlFotoPerfil" placeholder="URL da imagem">
-      <button class="save-btn" onclick="salvarFotoUsuario()">Salvar</button>
-      <button class="close-btn" onclick="fecharModalFoto()">Cancelar</button>
-    </div>
-  </div>
-  <h1> Minhas Metas Financeiras</h1>
-  <p></p>
-
-  <div class="metas-container" id="metas"></div>
-
-  <button class="add-button" onclick="abrirModal()">+</button>
-
-  <!-- Modal -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <h3 id="modal-title">Nova Meta</h3>
-      <input type="text" id="nome" placeholder="Nome da meta">
-      <input type="text" id="descricao" placeholder="Descrição">
-      <input type="number" id="valorTotal" placeholder="Valor total">
-      <input type="number" id="valorAtual" placeholder="Valor guardado">
-      <input type="text" id="iconeURL" placeholder="URL da imagem (opcional)">
-      <button class="save-btn" onclick="salvarMeta()">Salvar</button>
-      <button class="close-btn" onclick="fecharModal()">Cancelar</button>
-    </div>
-  </div>
   <script src="PopUp/toast.js"></script>
   <script src="javascriptMetas/script.js"></script>
+
+  <script>
+    /* ============================================================
+       DARK MODE / MODO ESCURO
+    ============================================================ */
+    function aplicarTema(tema) {
+      document.documentElement.setAttribute('data-tema', tema);
+      const escuro = tema === 'escuro';
+      document.getElementById('iconeTema').className = escuro ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      document.getElementById('textoTema').textContent = escuro ? 'Modo Claro' : 'Modo Escuro';
+      localStorage.setItem('metasTema', tema);
+    }
+
+    function alternarTema() {
+      const atual = document.documentElement.getAttribute('data-tema');
+      aplicarTema(atual === 'escuro' ? 'claro' : 'escuro');
+    }
+
+    // Aplicar tema salvo ou padrão ao carregar
+    aplicarTema(localStorage.getItem('metasTema') || 'claro');
+
+    /* ============================================================
+       CARROSSEL DE DICAS FINANCEIRAS
+    ============================================================ */
+    const dicas = [
+      {
+        titulo: "Defina Metas SMART",
+        texto: "Específicas, Mensuráveis, Atingíveis, Relevantes e com Prazo Definido. Isso torna suas metas mais claras e alcançáveis."
+      },
+      {
+        titulo: "Crie um Orçamento Realista",
+        texto: "Entenda para onde seu dinheiro está indo. Um orçamento ajuda a identificar gastos desnecessários e a direcionar recursos para suas metas."
+      },
+      {
+        titulo: "Automatize Suas Economias",
+        texto: "Configure transferências automáticas para sua conta de investimentos assim que receber seu salário. 'Pague-se primeiro'!"
+      },
+      {
+        titulo: "Revise Suas Metas Regularmente",
+        texto: "A vida muda, e suas metas financeiras também podem mudar. Revise-as a cada 3-6 meses para garantir que ainda estão alinhadas com seus objetivos."
+      },
+      {
+        titulo: "Celebre Pequenas Vitórias",
+        texto: "Reconheça e celebre cada marco alcançado. Isso mantém a motivação e torna a jornada mais prazerosa."
+      },
+      {
+        titulo: "Invista em Conhecimento",
+        texto: "Quanto mais você aprende sobre finanças e investimentos, melhores decisões você tomará. Livros, cursos e blogs são ótimas fontes."
+      },
+      {
+        titulo: "Tenha uma Reserva de Emergência",
+        texto: "Antes de investir em metas de longo prazo, construa uma reserva de emergência de 3 a 6 meses de despesas. Isso traz segurança e tranquilidade."
+      }
+    ];
+
+    let dicaAtualIndex = 0;
+
+    function inicializarDicas() {
+      const dicaDots = document.getElementById('dicaDots');
+      dicaDots.innerHTML = '';
+      dicas.forEach((_, index) => {
+        const dot = document.createElement('span');
+        dot.className = `dica-dot ${index === 0 ? 'ativo' : ''}`;
+        dot.onclick = () => irParaDica(index);
+        dicaDots.appendChild(dot);
+      });
+      exibirDica(0);
+      // Mudar dica automaticamente a cada 8 segundos
+      setInterval(proximaDica, 8000);
+    }
+
+    function exibirDica(index) {
+      dicaAtualIndex = index;
+      const dica = dicas[index];
+      document.getElementById('dicaTitulo').textContent = dica.titulo;
+      document.getElementById('dicaTexto').textContent = dica.texto;
+      
+      // Atualizar dots
+      document.querySelectorAll('.dica-dot').forEach((dot, i) => {
+        dot.classList.toggle('ativo', i === index);
+      });
+    }
+
+    function proximaDica() {
+      dicaAtualIndex = (dicaAtualIndex + 1) % dicas.length;
+      exibirDica(dicaAtualIndex);
+    }
+
+    function dicaAnterior() {
+      dicaAtualIndex = (dicaAtualIndex - 1 + dicas.length) % dicas.length;
+      exibirDica(dicaAtualIndex);
+    }
+
+    function irParaDica(index) {
+      exibirDica(index);
+    }
+
+    // Inicializar dicas quando a página carregar
+    window.addEventListener('load', inicializarDicas);
+  </script>
 </body>
 
 </html>

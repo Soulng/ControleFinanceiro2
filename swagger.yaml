@@ -18,7 +18,7 @@ info:
     name: Finance Easy
 
 servers:
-  - url: http://localhost:8080/ControleFinanceiro2-carlos_branch
+  - url: http://localhost:8080/ControleFinanceiro
     description: USBWebServer local
 
 security:

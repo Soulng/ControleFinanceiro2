@@ -164,24 +164,40 @@ function renderizarMetas() {
     const container = document.getElementById("metas");
     container.innerHTML = "";
 
+    if (metas.length === 0) {
+        container.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--txt-muted);">
+                <i class="fa-solid fa-inbox" style="font-size: 48px; margin-bottom: 16px; display: block; opacity: 0.5;"></i>
+                <p style="font-size: 16px;">Nenhuma meta criada ainda. Clique no botão + para começar!</p>
+            </div>
+        `;
+        return;
+    }
+
     metas.forEach((meta) => {
-        const card      = document.createElement("div");
-        card.className  = "meta-card";
+        const card = document.createElement("div");
+        card.className = "meta-card";
 
         let imagemHTML = meta.iconeURL
-            ? `<img src="${meta.iconeURL}" alt="Ícone da meta">`
+            ? `<img src="${meta.iconeURL}" alt="Ícone da meta" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
             : `<div class="meta-img">+</div>`;
+
+        const progresso = meta.progresso || 0;
+        const valorFormatado = parseFloat(meta.valorAtual).toFixed(2);
+        const totalFormatado = parseFloat(meta.valorTotal).toFixed(2);
 
         card.innerHTML = `
           ${imagemHTML}
+          ${meta.iconeURL ? `<div class="meta-img" style="display: none;">+</div>` : ''}
           <h3>${meta.nome}</h3>
-          <p>${meta.descricao}</p>
-          <p>Guardado: R$${meta.valorAtual} / R$${meta.valorTotal}</p>
+          <p>${meta.descricao || 'Sem descrição'}</p>
+          <div class="meta-valor">R$ ${valorFormatado} / R$ ${totalFormatado}</div>
           <div class="progress-bar">
-            <div class="progress" style="width:${meta.progresso}%"></div>
+            <div class="progress" style="width:${progresso}%"></div>
           </div>
+          <div class="progress-text">${Math.round(progresso)}% concluído</div>
           <div class="action-buttons">
-            <button class="remove-btn" onclick="removerMeta(${meta.id})">Remover</button>
+            <button class="remove-btn" onclick="removerMeta(${meta.id})"><i class="fa-solid fa-trash"></i> Remover</button>
           </div>
         `;
 
